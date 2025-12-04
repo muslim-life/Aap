@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Siraj Haier Saloon — Etawah Kunera</title>
+  <meta name="description" content="Siraj Haier Saloon, Etawah Kunera — सादा और जल्दी बुकिंग साइट" />
+  <style>
+    :root{ --bg:#fbfdff; --card:#ffffff; --accent:#0b57d0; --muted:#6b7280; --text:#0f1724; }
+    *{box-sizing:border-box}
+    body{ margin:0; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); }
+    .container{ max-width:980px; margin:18px auto; padding:16px; }
+    header{ display:flex; gap:14px; align-items:center; background:linear-gradient(90deg,#0b57d0 0%, #2a9df4 100%); color:white; padding:18px; border-radius:12px; }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .logo { width:64px; height:64px; border-radius:10px; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; }
+    .logo svg{ width:44px; height:44px; }
+    h1{ margin:0; font-size:1.25rem; }
+    .sub{ opacity:0.95; font-size:0.92rem; }.grid{ display:grid; grid-template-columns: 1fr 360px; gap:16px; margin-top:16px; }
+.card{ background:var(--card); border-radius:12px; padding:16px; box-shadow:0 8px 24px rgba(16,24,40,0.06); }
+
+.slots{ display:flex; gap:8px; margin-top:10px; }
+.slot{ padding:10px 12px; border-radius:10px; border:1px solid #eef2ff; cursor:pointer; background:white; min-width:110px; text-align:center; }
+.slot.selected{ border-color:var(--accent); box-shadow: 0 8px 18px rgba(11,87,208,0.12); }
+
+form label{ display:block; margin-top:10px; font-size:0.88rem; color:var(--muted); }
+input, textarea, select{ width:100%; padding:10px 12px; margin-top:6px; border-radius:10px; border:1px solid #e6eef8; font-size:0.95rem; }
+button{ background:var(--accent); color:white; border:0; padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:600; }
+
+.contact{ font-size:0.95rem; color:var(--muted); }
+.qr-wrap{ display:flex; gap:10px; align-items:center; margin-top:10px; }
+.qr { width:120px; height:120px; border-radius:8px; background:white; display:flex; align-items:center; justify-content:center; border:1px solid #eee; }
+
+.actions{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+.small{ font-size:0.86rem; color:var(--muted); }
+
+footer{ text-align:center; color:var(--muted); margin-top:18px; font-size:0.9rem; }
+
+@media (max-width:880px){ .grid{ grid-template-columns:1fr; } }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- simple SVG logo, replace or keep -->
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="48" height="48" rx="8" fill="white" fill-opacity="0.12" />
+            <path d="M20 36c0-6 4-12 12-12s12 6 12 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+            <path d="M24 44c0-2 6-6 8-6s8 4 8 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Siraj Haier Saloon</h1>
+          <div class="sub">Etawah, Kunera — कुरैदा/बाल कटवाने का भरोसा</div>
+        </div>
+      </div>
+      <div style="margin-left:auto; text-align:right;">
+        <div class="small">किसी मदद के लिए कॉल करें</div>
+        <div style="font-weight:700; font-size:1.05rem;">+91-XXXXXXXXXX</div>
+      </div>
+    </header><div class="grid">
+  <section class="card" aria-labelledby="book">
+    <h2 id="book">बुकिंग करें</h2>
+    <p class="small">सुबह · दोपहर · शाम — स्लॉट चुनें और नीचे विवरण भरें।</p>
+
+    <div class="slots" id="slots">
+      <div class="slot" data-slot="Morning (9:00 - 12:00)">Morning<br><small>9:00 - 12:00</small></div>
+      <div class="slot" data-slot="Afternoon (12:30 - 16:00)">Afternoon<br><small>12:30 - 16:00</small></div>
+      <div class="slot" data-slot="Evening (16:30 - 20:00)">Evening<br><small>16:30 - 20:00</small></div>
+    </div>
+
+    <form id="bookingForm" onsubmit="return handleSubmit(event)">
+      <label>आपका नाम (या ग्राहक का नाम)</label>
+      <input type="text" id="customerName" placeholder="उदा. रमेश" required>
+
+      <label>फोन नंबर</label>
+      <input type="tel" id="phone" placeholder="10-12 अंकों का नंबर" pattern="[0-9]{10,13}" required>
+
+      <label>पसंदीदा तारीख</label>
+      <input type="date" id="date" required>
+
+      <label>नोट (ऑप्शनल)</label>
+      <textarea id="notes" rows="2" placeholder="खास निर्देश अगर हों"></textarea>
+
+      <input type="hidden" id="selectedSlot" value="">
+
+      <div class="actions">
+        <button type="submit">बुक करें</button>
+        <button type="button" onclick="downloadReport()" style="background:#0d9488;">डाउनलोड रिपोर्ट</button>
+        <button type="button" onclick="printReceipt()" style="background:#111827;">प्रिंट संदर्भ</button>
+      </div>
+
+      <div id="message" style="margin-top:12px; font-weight:600;"></div>
+    </form>
+
+    <hr style="margin:16px 0; border:none; border-top:1px solid #f1f5f9">
+    <div class="small">बुकिंग QR — ग्राहक सीधे स्कैन करके कॉल या संदेश कर सकते हैं। नीचे अपना नंबर भरें और "QR जेनरेट" दबाएँ।</div>
+    <div style="display:flex; gap:8px; margin-top:8px; align-items:center;">
+      <input type="text" id="ownerPhone" placeholder="दुकान का नंबर (उदा. 91XXXXXXXXXX)" style="flex:1;" />
+      <button onclick="generateQR()" style="background:#ef7f1a;">QR जेनरेट</button>
+    </div>
+
+    <div class="qr-wrap">
+      <div class="qr" id="qrContainer">QR</div>
+      <div class="small">QR स्कैन करने पर ग्राहक कॉल या बुकिंग कर पाएँगे।</div>
+    </div>
+
+  </section>
+
+  <aside class="card">
+    <h3>हमारा पता</h3>
+    <p class="contact"><strong>Siraj Haier Saloon</strong><br>Etawah, Kunera</p>
+
+    <h4 style="margin-top:12px;">त्वरित संपर्क</h4>
+    <p class="contact">फोन: <span id="shopPhoneDisplay">+91-XXXXXXXXXX</span></p>
+
+    <hr style="margin:12px 0; border:none; border-top:1px solid #f1f5f9">
+    <h4>ब्रुकिंग रिपोर्ट</h4>
+    <p class="small">यहाँ आप हाल की बुकिंग्स देख/डाउनलोड कर सकते हैं। (ब्राउज़र लोकलस्टोरेज में सेव)</p>
+    <ul id="recent" style="padding-left:16px; margin:8px 0 0 0;"></ul>
+
+    <hr style="margin:12px 0; border:none; border-top:1px solid #f1f5f9">
+    <h4>होस्ट करने के रास्ते</h4>
+    <p class="small">1) GitHub Pages — फ्री और तेज़।<br>2) Netlify — सीधे zip अपलोड करें।<br>3) Local (Phone) — इस फ़ाइल को मोबाइल में खोलें।</p>
+    <p class="small">अगर चाहें मैं GitHub पर repo बनाने के लिए ज़रूरी निर्देश/फाइलें तैयार कर दूँ।</p>
+  </aside>
+</div>
+
+<footer>
+  © <span id="year"></span> Siraj Haier Saloon — Etawah Kunera
+</footer>
+
+  </div>  <!-- External QR library from jsDelivr (used for client-side QR generation) -->  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>  <script>
+    // UI logic
+    const slots = document.querySelectorAll('.slot');
+    const selectedInput = document.getElementById('selectedSlot');
+    const message = document.getElementById('message');
+    const recentList = document.getElementById('recent');
+    const shopPhoneDisplay = document.getElementById('shopPhoneDisplay');
+
+    slots.forEach(s => s.addEventListener('click', () => {
+      slots.forEach(x=>x.classList.remove('selected'));
+      s.classList.add('selected');
+      selectedInput.value = s.dataset.slot;
+    }));
+
+    // Load recent bookings from localStorage
+    const BOOKINGS_KEY = 'siraj_bookings_v1';
+    function loadRecent(){
+      recentList.innerHTML = '';
+      const arr = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+      arr.slice().reverse().slice(0,6).forEach(b => {
+        const li = document.createElement('li');
+        li.textContent = `${b.date} — ${b.slot} — ${b.name} (${b.phone})`;
+        recentList.appendChild(li);
+      });
+    }
+    loadRecent();
+
+    function handleSubmit(e){
+      e.preventDefault();
+      const name = document.getElementById('customerName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const date = document.getElementById('date').value;
+      const slot = selectedInput.value;
+      const notes = document.getElementById('notes').value.trim();
+
+      if(!slot){ message.style.color='crimson'; message.textContent = 'कृपया स्लॉट चुने।'; return false; }
+      if(!name || !phone || !date){ message.style.color='crimson'; message.textContent = 'सभी आवश्यक फ़ील्ड भरें।'; return false; }
+
+      const booking = { name, phone, date, slot, notes, created: new Date().toISOString() };
+      const arr = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+      arr.push(booking);
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(arr));
+
+      message.style.color='green';
+      message.textContent = `बुकिंग कन्फर्म — ${date} | ${slot} | ${name} (${phone})`;
+      loadRecent();
+
+      // update shop display phone if owner set
+      const owner = document.getElementById('ownerPhone').value.trim();
+      if(owner) shopPhoneDisplay.textContent = owner;
+
+      // copy summary to clipboard
+      try{ navigator.clipboard && navigator.clipboard.writeText(message.textContent); }catch(e){}
+
+      return false;
+    }
+
+    // Expose to global for form onsubmit
+    window.handleSubmit = handleSubmit;
+
+    // QR generation: creates tel: or sms: or simple URL encoded QR — if owner phone present, uses tel:+91...
+    function generateQR(){
+      const owner = document.getElementById('ownerPhone').value.trim();
+      const container = document.getElementById('qrContainer');
+      container.innerHTML = '';
+      if(!owner){ container.textContent = 'पहले नंबर दर्ज करें'; return; }
+      // Create a tel: link so scanning calls the shop
+      const tel = owner.replace(/\s+/g,'');
+      const payload = `tel:${tel}`;
+      // Use QRCode lib
+      QRCode.toDataURL(payload, { width: 300, margin:1 }).then(url => {
+        const img = document.createElement('img'); img.src = url; img.alt='QR'; img.style.width='100%'; img.style.height='100%'; img.style.objectFit='contain';
+        container.innerHTML = '';
+        container.appendChild(img);
+      }).catch(err => { container.textContent = 'QR generate error'; });
+
+      // update shop phone display
+      shopPhoneDisplay.textContent = owner;
+    }
+    window.generateQR = generateQR;
+
+    // Download recent bookings as CSV
+    function downloadReport(){
+      const arr = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+      if(!arr.length){ alert('कोई बुकिंग नहीं'); return; }
+      const rows = [['Name','Phone','Date','Slot','Notes','Created']];
+      arr.forEach(r => rows.push([r.name, r.phone, r.date, r.slot, r.notes || '', r.created]));
+      const csv = rows.map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+      const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'siraj_bookings.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    }
+    window.downloadReport = downloadReport;
+
+    function printReceipt(){ window.print(); }
+    window.printReceipt = printReceipt;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script></body>
+</html>
